@@ -1,3 +1,55 @@
 body {
-    background: pink;
+    background-color: black;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 80px;
+
+    .player-turn {
+        font-family: 'Arcade';
+        color: white;
+        font-size: 16px;
+        margin-bottom: 60px;
+    }
+
+    .game {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        max-width: 312px;
+        margin-bottom: 65px;
+
+        .box {
+            background-color: #e9e9e9;
+            width: 89px;
+            height: 95px;
+            flex-basis: 94px;
+        }
+    }
+
+    .controls {
+
+        .restart {
+            font-family: 'Arcade';
+            cursor: pointer;
+            color: white;
+            font-size: 11px;
+            padding: 13px 21px;
+            background: transparent;
+            border: 4px solid #00f;
+            box-shadow: 0 0 5px #00f, 0 0 10px #00f;
+            transition: all 0.2s ease;
+        }
+
+        .restart:hover {
+            background-color: #001aff;
+            color: white;
+            box-shadow: 0 0 10px #00f, 0 0 20px #00f;
+        }
+    }
+
 }

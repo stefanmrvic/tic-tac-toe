@@ -29,37 +29,36 @@ function Gameboard() {
         }
 
         const position = determineArrayPosition(row, column);
-
         let positionTaken = gameboard[position] !== '#';
     
         if (position === undefined) throw new Error('Invalid row/column number(s). Max is number is 3 for both row and column field.');
         
-        if (!positionTaken) {
-            gameboard[position] = player.playerMark;
-
-            let winnerExists = checkWinner(gameboard, player);
-            getGameboard();
-
-            if (winnerExists) {
-                player.increaseScore();
-                announceWinner(player);
-                let gameover = checkIsGameOver(p1, p2);
-
-                if (gameover) {
-                    console.log('Gameover! Start again.')
-                    resetState(p1, p2, resetGameboard);
-                } else {
-                    resetGameboard();
-                    getGameboard();
-                    console.log('Play another round! Start again.')
-                }
-                return;
-            }
-            switchTurns(player);
-        } else {
+        if (positionTaken) {
             getGameboard();
             console.log('That place is already taken! Play again.');
+            return;
         }
+
+        gameboard[position] = player.playerMark;
+
+        let roundWon = checkWinner(gameboard, player);
+        getGameboard();
+
+        if (roundWon) {
+            player.increaseScore();
+            announceWinner(player);
+            let gameover = isGameOver(p1, p2);
+
+            if (gameover) {
+                console.log(`Gameover! ${player.playerName} wins the game!`);
+                resetState(p1, p2, resetGameboard);
+            } else {
+                resetGameboard();
+                getGameboard();
+            }
+            return;
+        }
+        switchTurns(player);
     }
     
     return {
@@ -106,11 +105,18 @@ function resetState(p1, p2, func) {
     func();
 }
 
+// To-Do for DOM version
+function playGame(gameboard) {
+    
+}
+
+// To-Do for DOM version
 function playRound() {
 
 }
 
-function checkIsGameOver(p1, p2) {
+
+function isGameOver(p1, p2) {
     let gameover = false;
     let pointsToWin = 3;
     const p1Score = p1.showScore();
@@ -212,10 +218,6 @@ function checkWinner(gameboard, player) {
     return winner;
 }
 
-function playGame(gameboard) {
-    
-}
-
 function getPlayerName(player) {
     let playerName = prompt(`${player}, enter your name:`).trim();
 
@@ -227,10 +229,10 @@ function getPlayerName(player) {
 }
 
 // (function () {
-    const p1Name = getPlayerName('Player one');
-    const p2Name = getPlayerName('Player two');
-    const p1 = Player(p1Name, 'X');
-    const p2 = Player(p2Name, 'O');
-    const gameboard = Gameboard();
-    gameboard.getGameboard();
+    // const p1Name = getPlayerName('Player one');
+    // const p2Name = getPlayerName('Player two');
+    // const p1 = Player(p1Name, 'X');
+    // const p2 = Player(p2Name, 'O');
+    // const gameboard = Gameboard();
+    // gameboard.getGameboard();
 // })();
