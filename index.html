@@ -6,6 +6,19 @@
     <title>Tic Tac Toe</title>
 </head>
 <body>
+    <div class="dialog-box">
+        <dialog class="dialog" open>
+          <form class="dialog__form" method="dialog">
+            <h2 class="dialog__header">Start New Game</h2>
+            <label for="p1-name">Player 1's Name:</label>
+            <input type="text" id="p1-name" placeholder="Player One" required>
+            <label for="p2-name">Player 2's Name:</label>
+            <input type="text" id="p2-name" placeholder="Player Two" required>
+            <button>Start Game</button>
+          </form>
+        </dialog>
+    </div>
+
     <div class="container">
         <h2 class="player-turn">Player's turn...</h2>
 
