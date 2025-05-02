@@ -4,9 +4,9 @@ import '../styles/style.scss';
 
 function Gameboard() {
     let gameboard = [
-        '#', '#', '#',
-        '#', '#', '#',
-        '#', '#', '#'
+        '', '', '',
+        '', '', '',
+        '', '', ''
     ];
 
     const resetGameboard = () => {
@@ -21,15 +21,8 @@ function Gameboard() {
         console.log(gameboard[6], gameboard[7], gameboard[8]);
     }
 
-    const playMove = (row, column, player) => {
-        const determineArrayPosition = (row, column) => {
-            if (row === 1) return column - 1;
-            else if (row === 2) return row + column;
-            else if (row === 3) return row + column + 2;
-        }
-
-        const position = determineArrayPosition(row, column);
-        let positionTaken = gameboard[position] !== '#';
+    const playMove = (position, player) => {
+        let positionTaken = gameboard[position] !== '';
     
         if (position === undefined) throw new Error('Invalid row/column number(s). Max is number is 3 for both row and column field.');
         
@@ -228,11 +221,39 @@ function getPlayerName(player) {
     return playerName;
 }
 
-// (function () {
-    // const p1Name = getPlayerName('Player one');
-    // const p2Name = getPlayerName('Player two');
-    // const p1 = Player(p1Name, 'X');
-    // const p2 = Player(p2Name, 'O');
+(function () {
+    let p1Name;
+    let p2Name;
+    const form = document.getElementById('form');
+    const game = document.querySelector('.game');
+    
+    const setPlayerNames = (e) => {
+        e.preventDefault();
+        const gameContainer = document.querySelector('.container');
+        const dialog = document.querySelector('.dialog');
+        const p1Input = document.getElementById('p1').value.trim();
+        const p2Input = document.getElementById('p2').value.trim();
+        
+        if (p1Input && p2Input) {
+            p1Name = p1Input;
+            p2Name = p2Input;
+            dialog.close();
+            gameContainer.classList.add('active');
+        }
+    }
+
+    const getPosition = (e) => {
+        const ele = e.target;
+        const eleValue = Number(ele.getAttribute("data-position"));
+        console.log(eleValue);
+    }
+
+    form.addEventListener('submit', setPlayerNames);
+    game.addEventListener('click', getPosition);
+
+    const p1 = Player(p1Name, 'X');
+    const p2 = Player(p2Name, 'O');
+
     // const gameboard = Gameboard();
     // gameboard.getGameboard();
-// })();
+})();

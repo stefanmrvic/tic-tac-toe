@@ -3,17 +3,15 @@ body {
 }
 
 .dialog-box {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    height: 292px;
-    width: 364px;
-    margin-top: -146px;
-    margin-left: -182px;
 
     .dialog {
-        width: 100%;
-        height: 100%;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        height: 292px;
+        width: 364px;
+        margin-top: -146px;
+        margin-left: -182px;
         padding: 26px 32px 32px 32px;
         border-radius: 12px;
         border: none;
@@ -69,9 +67,12 @@ body {
     }
 }
 
+.active {
+    display: flex !important;
+}
+
 .container {
     display: none;
-    //display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 80px;
@@ -87,15 +88,27 @@ body {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 9px;
+        gap: 8px;
         max-width: 312px;
         margin-bottom: 65px;
 
         .box {
-            background-color: #e9e9e9;
             width: 89px;
             height: 95px;
             flex-basis: 94px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid white;
+            cursor: pointer;
+            
+            img {
+                height: 89%;
+            }
+        }
+
+        .box:hover {
+            border: 2px solid red;
         }
     }
 

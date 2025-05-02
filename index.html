@@ -8,12 +8,12 @@
 <body>
     <div class="dialog-box">
         <dialog class="dialog" open>
-          <form class="dialog__form" method="dialog">
+          <form id="form" class="dialog__form" method="dialog">
             <h2 class="dialog__header">Start New Game</h2>
-            <label for="p1-name">Player 1's Name:</label>
-            <input type="text" id="p1-name" placeholder="Player One" required>
-            <label for="p2-name">Player 2's Name:</label>
-            <input type="text" id="p2-name" placeholder="Player Two" required>
+            <label for="p1">Player 1's Name:</label>
+            <input type="text" id="p1" placeholder="Player One" required>
+            <label for="p2">Player 2's Name:</label>
+            <input type="text" id="p2" placeholder="Player Two" required>
             <button>Start Game</button>
           </form>
         </dialog>
@@ -21,17 +21,34 @@
 
     <div class="container">
         <h2 class="player-turn">Player's turn...</h2>
-
         <div class="game">
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
+            <div class="box" data-position="0">
+                <img src="#" alt="">
+            </div>
+            <div class="box" data-position="1">
+                <img src="#" alt="">
+            </div>
+            <div class="box" data-position="2">
+                <img src="#" alt="">
+            </div>
+            <div class="box" data-position="3">
+                <img src="#" alt="">
+            </div>
+            <div class="box" data-position="4">
+                <img src="#" alt="">
+            </div>
+            <div class="box" data-position="5">
+                <img src="#" alt="">
+            </div>
+            <div class="box" data-position="6">
+                <img src="#" alt="">
+            </div>
+            <div class="box" data-position="7">
+                <img src="#" alt="">
+            </div>
+            <div class="box" data-position="8"> 
+                <img src="#" alt="">
+            </div>
         </div>
 
         <div class="controls">
