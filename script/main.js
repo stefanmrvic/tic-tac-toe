@@ -1,7 +1,6 @@
 import { render } from 'sass';
 import '../styles/style.scss';
 
-
 function Gameboard() {
     let gameboard = [
         '', '', '',
@@ -9,16 +8,39 @@ function Gameboard() {
         '', '', ''
     ];
 
+    // Using spread operator to create a shallow copy of the array and not to actually return the reference of the array
+    const getGameboard = () => [...gameboard];
+
     const resetGameboard = () => {
         for (let i = 0; i < gameboard.length; i++) {
-            gameboard[i] = '#';
+            gameboard[i] = '';
           }
     }
 
-    const getGameboard = () => {
-        console.log(gameboard[0], gameboard[1], gameboard[2]);
-        console.log(gameboard[3], gameboard[4], gameboard[5]);
-        console.log(gameboard[6], gameboard[7], gameboard[8]);
+    const isDraw = () => {
+        let isDraw = true;
+
+        for (const element of gameboard) {
+            if (element === '') isDraw = false;
+        }
+        return isDraw;
+    }
+
+    const renderGameboard = () => {
+        const boxElements = [...document.querySelectorAll('.box')];
+
+        for (let element in gameboard) {
+            const boxElement = boxElements[element];
+            const img = boxElement.querySelector('img');
+
+            if (gameboard[element] === 'X') {
+                img.setAttribute('src', '/public/imgs/X.png');
+            } else if (gameboard[element] === 'O') {
+                img.setAttribute('src', '/public/imgs/O.png');
+            } else {
+                img.setAttribute('src', '#');
+            }
+        }
     }
 
     const playMove = (position, player) => {
@@ -26,36 +48,15 @@ function Gameboard() {
     
         if (position === undefined) throw new Error('Invalid row/column number(s). Max is number is 3 for both row and column field.');
         
-        if (positionTaken) {
-            getGameboard();
-            console.log('That place is already taken! Play again.');
-            return;
+        if (!positionTaken) {
+            gameboard[position] = player.playerMark;
         }
-
-        gameboard[position] = player.playerMark;
-
-        let roundWon = checkWinner(gameboard, player);
-        getGameboard();
-
-        if (roundWon) {
-            player.increaseScore();
-            announceWinner(player);
-            let gameover = isGameOver(p1, p2);
-
-            if (gameover) {
-                console.log(`Gameover! ${player.playerName} wins the game!`);
-                resetState(p1, p2, resetGameboard);
-            } else {
-                resetGameboard();
-                getGameboard();
-            }
-            return;
-        }
-        switchTurns(player);
     }
     
     return {
         getGameboard,
+        isDraw,
+        renderGameboard,
         playMove,
         resetGameboard,
     }
@@ -65,195 +66,159 @@ function Player(name, mark) {
     const playerName = name;
     const playerMark = mark;
 
-    let playerScore = 0;
-
-    const increaseScore = () => playerScore++;
-    const showScore = () => playerScore;
-    const resetScore = () => playerScore = 0;
-
-    return {
+    return { 
         playerName,
         playerMark,
-        increaseScore,
-        showScore,
-        resetScore,
-    }
-}
-
-function switchTurns(player) {
-    if (player === p1) console.log('Player two plays now!');
-    else console.log('Player one plays now!');
-}
-
-function announceWinner(player) {
-    const { p1Score, p2Score } = Score(p1, p2);
-
-    console.log(`${player.playerName} wins the round!`);
-    console.log(`Total score is now: ${p1Score} : ${p2Score}`);
-}
-
-function resetState(p1, p2, func) {
-    p1.resetScore();
-    p2.resetScore();
-    func();
-}
-
-// To-Do for DOM version
-function playGame(gameboard) {
-    
-}
-
-// To-Do for DOM version
-function playRound() {
-
-}
-
-
-function isGameOver(p1, p2) {
-    let gameover = false;
-    let pointsToWin = 3;
-    const p1Score = p1.showScore();
-    const p2Score = p2.showScore();
-
-    if (p1Score === pointsToWin || p2Score === pointsToWin) {
-        gameover = true;
-    }
-
-    return gameover;
-}
-
-function Score(p1, p2) {
-    const p1Score = p1.showScore();
-    const p2Score = p2.showScore();
-
-    return {
-        p1Score,
-        p2Score,
     }
 }
 
 function checkWinner(gameboard, player) {
-    let winner = false;
+    let isWinner = false;
+    
     if (
         gameboard[0] === player.playerMark &&
         gameboard[1] === player.playerMark &&
         gameboard[2] === player.playerMark 
     ) {
-        gameboard[0] = "-";
-        gameboard[1] = "-";
-        gameboard[2] = "-";
-        winner = true;
+        isWinner = true;
     } else if (
         gameboard[3] === player.playerMark &&
         gameboard[4] === player.playerMark &&
         gameboard[5] === player.playerMark 
     ) {
-        gameboard[3] = "-";
-        gameboard[4] = "-";
-        gameboard[5] = "-";
-        winner = true;
+        isWinner = true;
     } else if (
         gameboard[6] === player.playerMark &&
         gameboard[7] === player.playerMark &&
         gameboard[8] === player.playerMark 
     ) {
-        gameboard[6] = "-";
-        gameboard[7] = "-";
-        gameboard[8] = "-";
-        winner = true;
+        isWinner = true;
     } else if (
         gameboard[0] === player.playerMark &&
         gameboard[3] === player.playerMark &&
         gameboard[6] === player.playerMark 
     ) {
-        gameboard[0] = "|";
-        gameboard[3] = "|";
-        gameboard[6] = "|";
-        winner = true;
+        isWinner = true;
     } else if (
         gameboard[1] === player.playerMark &&
         gameboard[4] === player.playerMark &&
         gameboard[7] === player.playerMark 
     ) {
-        gameboard[1] = "|";
-        gameboard[4] = "|";
-        gameboard[7] = "|";
-        winner = true;
+        isWinner = true;
     } else if (
         gameboard[2] === player.playerMark &&
         gameboard[5] === player.playerMark &&
         gameboard[8] === player.playerMark 
     ) {
-        gameboard[2] = "|";
-        gameboard[5] = "|";
-        gameboard[8] = "|";
-        winner = true;
+        isWinner = true;
     } else if (
         gameboard[6] === player.playerMark &&
         gameboard[4] === player.playerMark &&
         gameboard[2] === player.playerMark 
     ) {
-        gameboard[6] = "/";
-        gameboard[4] = "/";
-        gameboard[2] = "/";
-        winner = true;
+        isWinner = true;
     } else if (
         gameboard[8] === player.playerMark &&
         gameboard[4] === player.playerMark &&
         gameboard[0] === player.playerMark 
     ) {
-        gameboard[8] = "\\";
-        gameboard[4] = "\\";
-        gameboard[0] = "\\";
-        winner = true;
+        isWinner = true;
     } 
-
-    return winner;
+    return isWinner;
 }
 
-function getPlayerName(player) {
-    let playerName = prompt(`${player}, enter your name:`).trim();
-
-    while(playerName === '') {
-        playerName = prompt(`${player}, enter a valid name:`).trim();
-    }
-
-    return playerName;
-}
-
-(function () {
-    let p1Name;
-    let p2Name;
-    const form = document.getElementById('form');
-    const game = document.querySelector('.game');
-    
-    const setPlayerNames = (e) => {
+(function () { 
+    const createPlayers = (e) => {
         e.preventDefault();
-        const gameContainer = document.querySelector('.container');
-        const dialog = document.querySelector('.dialog');
+        const dialogStart = document.querySelector('.dialog__start');
         const p1Input = document.getElementById('p1').value.trim();
         const p2Input = document.getElementById('p2').value.trim();
         
         if (p1Input && p2Input) {
-            p1Name = p1Input;
-            p2Name = p2Input;
-            dialog.close();
-            gameContainer.classList.add('active');
+            p1 = Player(p1Input, 'X');
+            p2 = Player(p2Input, 'O');
+            dialogStart.close();
+            startGame();
         }
     }
 
-    const getPosition = (e) => {
-        const ele = e.target;
-        const eleValue = Number(ele.getAttribute("data-position"));
-        console.log(eleValue);
+    const startGame = () => {
+        const gameContainer = document.querySelector('.container');
+        const playerTurn = document.querySelector('.player-turn');
+        game.addEventListener('click', playRound);
+
+        playerTurn.textContent = `${p1.playerName}'s turn...`;
+        gameContainer.classList.add('active');
+        currentPlayer = p1;
+
     }
 
-    form.addEventListener('submit', setPlayerNames);
-    game.addEventListener('click', getPosition);
+    const switchTurns = () => {
+        const elements = document.querySelectorAll('.box');
+        const playerTurn = document.querySelector('.player-turn');
+    
+        if (currentPlayer === p1) {
+            elements.forEach(el => el.classList.toggle('p2'));
+            currentPlayer = p2;
+        } else {
+            elements.forEach(el => el.classList.toggle('p2'));
+            currentPlayer = p1;
+        }
+        playerTurn.textContent = `${currentPlayer.playerName}'s turn...`;
+    }
 
-    const p1 = Player(p1Name, 'X');
-    const p2 = Player(p2Name, 'O');
+    const playRound = (e) => {
+        if (!e.target.classList.contains('box')) return;
 
-    // const gameboard = Gameboard();
-    // gameboard.getGameboard();
+        let position = Number(e.target.getAttribute("data-position"));
+        console.log(e.target);
+        console.log(position);
+        
+        gameboard.playMove(position, currentPlayer);
+        gameboard.renderGameboard();
+        
+        let gameState = gameboard.getGameboard();
+        let roundWon = checkWinner(gameState, currentPlayer);   
+        let isDraw = gameboard.isDraw();
+
+        if (roundWon || isDraw) {
+            const dialogReset = document.querySelector('.dialog__reset');
+            const winnerText = document.querySelector('.dialog__reset__header');
+
+            winnerText.textContent = roundWon ? `${currentPlayer.playerName} wins!` : `It's a draw!`;
+            dialogReset.showModal();
+            game.removeEventListener('click', playRound);
+            return;
+        }
+        switchTurns();
+    } 
+
+    const resetState = () => {
+        const gameContainer = document.querySelector('.container');
+        const dialogStart = document.querySelector('.dialog__start');
+        const dialogReset = document.querySelector('.dialog__reset');
+
+        game.removeEventListener('click', playRound);
+        gameContainer.classList.remove('active');
+
+        gameboard.resetGameboard();
+        gameboard.renderGameboard();
+        form.reset();
+        dialogStart.showModal();
+        dialogReset.close();
+    }
+
+    const form = document.getElementById('form');
+    const game = document.querySelector('.game');
+    const restartBtn = document.querySelector('.restart-btn');
+    const dialogResetBtn = document.querySelector('.dialog__reset button');
+    const gameboard = Gameboard();
+    
+    let p1;
+    let p2;
+    let currentPlayer;
+
+    form.addEventListener('submit', createPlayers);
+    restartBtn.addEventListener('click', resetState);
+    dialogResetBtn.addEventListener('click', resetState);
 })();

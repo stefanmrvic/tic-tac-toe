@@ -2,10 +2,10 @@ body {
     background-color: black;
 }
 
-.dialog-box {
+.dialog__container {
 
-    .dialog {
-        position: fixed;
+    .dialog__start {
+        position: absolute;
         top: 50%;
         left: 50%;
         height: 292px;
@@ -15,8 +15,9 @@ body {
         padding: 26px 32px 32px 32px;
         border-radius: 12px;
         border: none;
+        overflow: hidden;
 
-        .dialog__form {
+        &__form {
             display: flex;
             flex-direction: column;
 
@@ -56,19 +57,78 @@ body {
             }
         }
 
-        .dialog__header {
+        &__header {
             text-align: center;
             margin-bottom: 20px;
         }
 
-        .dialog__form > * {
+        &__form > * {
             font-family: 'Arcade';
         }
     }
+
+    .dialog__reset {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        height: 162px;
+        width: 372px;
+        margin-top: -81px;
+        margin-left: -186px;
+        padding: 32px;
+        border-radius: 12px;
+        border: 4px solid red;
+        box-shadow: 0 0 10px red, 0 0 20px red;
+        background: black;
+        overflow: hidden;
+
+
+        &__form > * {
+            font-family: 'Arcade';
+        }
+
+        &__form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &__header {
+            color: red;
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        button {
+            cursor: pointer;
+            font-size: 13px;
+            height: 36px;
+            background-color: red;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        button:hover {
+            background-color: rgb(218, 0, 0);
+        }
+    }
+
+    .dialog__reset::backdrop {
+        background-color: rgba(0, 0, 0, 0.425);
+    }
 }
+
+
 
 .active {
     display: flex !important;
+}
+
+.p2:hover {
+    border: 2px solid red !important;
 }
 
 .container {
@@ -108,13 +168,13 @@ body {
         }
 
         .box:hover {
-            border: 2px solid red;
+            border: 2px solid #001aff;
         }
     }
 
     .controls {
 
-        .restart {
+        .restart-btn {
             font-family: 'Arcade';
             cursor: pointer;
             color: white;
@@ -126,7 +186,7 @@ body {
             transition: all 0.2s ease;
         }
 
-        .restart:hover {
+        .restart-btn:hover {
             background-color: #001aff;
             color: white;
             box-shadow: 0 0 10px #00f, 0 0 20px #00f;
